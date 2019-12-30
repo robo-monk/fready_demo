@@ -26,8 +26,14 @@ body{
     margin-left: 130px;
     margin-top: 10%;   
     text-align: center;
-}
+    opacity: 0%;
+    transition: all .2s ease-in;
 
+}
+#menu_wrapper:hover{
+
+    opacity: 100%;
+}
 #toolbar{
     
     padding: 10px;
@@ -37,13 +43,43 @@ body{
     border-radius: 15px;
     box-shadow: 4px 4px 12px #d1cdc78f, -4px -4px 12px #ffffff;
     border: 1px solid #ffffff80;
+    cursor: pointer;
+    
 
-    transition-duration: 0.09s;
+}
+
+#toolbar:hover{
+    
+    border: 1px solid #ffffff;
 
 }
     
 
-#toolbar:hover{
+#toolbar:active{
+    
+    box-shadow: 4px 4px 12px #d1cdc780 inset, -4px -4px 12px #ffffffa1 inset;
+
+}
+
+#avatar{
+
+    margin-bottom: 30px;
+    width: 60px;
+    border-radius: 50%;
+    box-shadow: 4px 4px 12px #d1cdc78f, -4px -4px 12px #ffffff;
+    border: 1px solid #ffffff80;
+    cursor: pointer;
+
+
+}
+
+#avatar:hover{
+    
+    border: 1px solid #ffffff;
+
+}
+
+#avatar:active{
     
     box-shadow: 4px 4px 12px #d1cdc780 inset, -4px -4px 12px #ffffffa1 inset;
 
