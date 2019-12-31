@@ -2,8 +2,8 @@
 
 const menu_wrapper = document.querySelector('#menu_wrapper');
 const reader = document.querySelector('#reader');
-const wpm_text = document.querySelector('#wpm');
-
+const wpm_div = document.querySelector('#wpm');
+const auto_div = document.querySelector('#auto');
 //variables
 
 var last_mouse_x;
@@ -34,11 +34,15 @@ window.addEventListener('keydown', keyDown);
 window.addEventListener('keyup', keyUp);
 
 function keyDown(e) {
+    mouse_moved();
 
     pressedKeys[e.keyCode] = true;
 }
 
 function keyUp(e) {
+    
+    setTimeout(function () { mouse_stopped(); }, 1000);
+
 
     if (e.keyCode == 65){
         autoSwitch();
@@ -51,10 +55,14 @@ function autoSwitch(){
 
     if (auto) {
         auto = false;
+        auto_div.style.fontWeight = "300";
+
 
     } else {
 
         auto = true;
+        auto_div.style.fontWeight = "700";
+
     }
 }
 
@@ -129,14 +137,19 @@ function runFrame(){
 
     if (pressedKeys[189]) {
         // mouse_moved();
-        wpm -= 10;
+        if (wpm>10){
+            wpm -= 10;
+        }
+        
     }
     if (pressedKeys[187]) {
 
         wpm += 10;
 
     }
-    wpm_text.textContent = wpm;
+    //update interval in nice way
+
+    wpm_div.textContent = wpm;
 
 }
 

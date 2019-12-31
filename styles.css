@@ -1,6 +1,13 @@
 body{
     background-color: #efeeee;
     font-family: 'Gelasio', serif;
+    color: #111111f5;
+}
+
+hr{
+    border: 0.5px solid #ffffff80;
+    border-radius: 5px;
+    /* box-shadow: 4px 4px 12px #d1cdc78f, -4px -4px 12px #ffffff; */
 }
 
 
@@ -36,6 +43,7 @@ body{
 }
 #toolbar{
     
+    font-family: 'Roboto Mono', monospace;
     padding: 10px;
     width: 50px;
     height: 412.5px;    
@@ -44,6 +52,9 @@ body{
     box-shadow: 4px 4px 12px #d1cdc78f, -4px -4px 12px #ffffff;
     border: 1px solid #ffffff80;
     cursor: pointer;
+
+    line-height: 3.5;
+
     
 
 }
