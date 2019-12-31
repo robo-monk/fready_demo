@@ -94,7 +94,6 @@ function mvc() {
     var dt = Date.now() - expected2; // the drift (positive for overshooting)
     if (dt > speed) {
         // possibly special handling to avoid futile "catch up" run
-        alert('shit');
         speed = (60 / (wpm * 6)) * 1000;
         expected2 = Date.now() + speed;
         dt = Date.now() - expected2;
