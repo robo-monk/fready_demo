@@ -1,6 +1,7 @@
 //document objects
-
+const body = document.querySelector('body');
 const menu_wrapper = document.querySelector('#menu_wrapper');
+const toolbar = document.querySelector('#toolbar');
 const reader = document.querySelector('#reader');
 const wpm_div = document.querySelector('#wpm');
 const auto_div = document.querySelector('#auto');
@@ -111,12 +112,19 @@ function mvc() {
 function mouse_moved(){
 
     menu_wrapper.style.opacity = 100;
+    body.style.cursor = 'inherit';
+    toolbar.style.cursor = 'pointer';
+    reader.style.cursor = 'text';
+
 
 }
 
 function mouse_stopped(){
 
     menu_wrapper.style.opacity = 0;
+    body.style.cursor = 'none';
+    toolbar.style.cursor = 'none';
+    reader.style.cursor = 'none';
 
 }
 
