@@ -90,7 +90,6 @@ function mvc() {
     updateFrame();
     speed = (60 / (wpm * 6)) * 1000;
     
-    console.log(speed);
     var dt = Date.now() - expected2; // the drift (positive for overshooting)
     if (dt > speed) {
         // possibly special handling to avoid futile "catch up" run
