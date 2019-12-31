@@ -55,9 +55,15 @@ hr{
     border: 1px solid #ffffff80;
     cursor: pointer;
 
-    line-height: 3.5;
+    line-height: 5.0;
 
     
+
+}
+
+#wpm_sector {
+    
+    line-height: 1.7;
 
 }
 
@@ -104,4 +110,14 @@ mark {
   /* color: black; */
   border-radius: 3px;
 
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Opera and Firefox */
 }

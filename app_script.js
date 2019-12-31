@@ -5,6 +5,9 @@ const toolbar = document.querySelector('#toolbar');
 const reader = document.querySelector('#reader');
 const wpm_div = document.querySelector('#wpm');
 const auto_div = document.querySelector('#auto');
+const wpm_plus = document.querySelector('#wpm_plus')
+const wpm_minus = document.querySelector('#wpm_minus')
+
 //variables
 
 var last_mouse_x;
@@ -148,18 +151,36 @@ function runFrame(){
     if (pressedKeys[189]) {
         // mouse_moved();
         if (wpm>10){
+
+            wpm_minus.style.fontWeight = "700";
             wpm -= 10;
+            setTimeout(function () { wpm_minus.style.fontWeight = "300"; }, 50);
+
+            
+
         }
         
     }
     if (pressedKeys[187]) {
-
+        wpm_plus.style.fontWeight = "700";
         wpm += 10;
+        setTimeout(function () { wpm_plus.style.fontWeight = "300"; }, 50);
 
     }
     //update interval in nice way
 
     wpm_div.textContent = wpm;
+
+}
+
+function wpmPlusPlus(){
+
+    wpm += 10;
+
+}
+function wpmMinusMinus() {
+
+    wpm -= 10;
 
 }
 
