@@ -97,3 +97,11 @@ hr{
     box-shadow: 4px 4px 12px #d1cdc780 inset, -4px -4px 12px #ffffffa1 inset;
 
 }
+
+mark {
+  /* B80C09 */
+  background: #19e0ae;
+  /* color: black; */
+  border-radius: 3px;
+
+}

@@ -164,14 +164,17 @@ function updateFrame() {
 
     //ugly ass code ahead
     marking = false;
-
+    add = 1;
+    if (reader.textContent[cursor+1]==" "){
+        add = 2;
+    }
     if (pressedKeys[39] || auto) {
         // console.log(auto)
-        cursor++;
+        cursor+=add;
         marking = true;
     }
     if (pressedKeys[37]) {
-        cursor--;
+        cursor-= add;
         marking = true;
 
     }
