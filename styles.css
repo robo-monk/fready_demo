@@ -95,7 +95,6 @@ hr{
 #avatar:hover{
     
     border: 1px solid #ffffff;
-
 }
 
 #avatar:active{
@@ -105,10 +104,14 @@ hr{
 }
 
 mark {
-  /* B80C09 */
-  background: #19e0ae;
-  /* color: black; */
-  border-radius: 3px;
+    /* B80C09 */
+    background: #19e0ae;
+    border-radius: 3px;
+    /* outline: red;
+    outline-width: px;
+    outline-style: dashed; */
+
+    
 
 }
 

@@ -7,6 +7,7 @@ const wpm_div = document.querySelector('#wpm');
 const auto_div = document.querySelector('#auto');
 const wpm_plus = document.querySelector('#wpm_plus')
 const wpm_minus = document.querySelector('#wpm_minus')
+const color_div = document.querySelector('#color')
 
 //variables
 
@@ -19,7 +20,17 @@ var marking = false;
 var wpm = 250;
 var auto = false;
 
+//constants
+
+var color = 0;
+const colors = ['#EEC643', '#ED254E', '#004BA8', '#0CCE6B', '#B8B8F3'];
+var pointer = 0;
 //listeners and boring stuff
+
+// const newText = reader.textContent.split('\n').map((item, i) => {
+//     return `<div key=${i}>${item}</div>`;
+// });
+// reader.innerHTML = newText.join('');
 
 document.onmousemove = (function () {
     var onmousestop = function () {
@@ -36,11 +47,13 @@ document.onmousemove = (function () {
 
 window.addEventListener('keydown', keyDown);
 window.addEventListener('keyup', keyUp);
+window.addEventListener('click', clcikkk)
 
 function keyDown(e) {
-    mouse_moved();
 
+    mouse_moved();
     pressedKeys[e.keyCode] = true;
+
 }
 
 function keyUp(e) {
@@ -51,8 +64,24 @@ function keyUp(e) {
     if (e.keyCode == 65){
         autoSwitch();
     }
+
+    if (e.keyCode == 67) {
+        colorSwitch();
+    }
+
+    if (e.keyCode == 80) {
+        pointerSwitch();
+    }
+
+
+
     pressedKeys[e.keyCode] = false;
 
+}
+
+function clcikkk(){
+    mouse_moved();
+    setTimeout(function () { mouse_stopped(); }, 1000);
 }
 
 function autoSwitch(){
@@ -68,6 +97,50 @@ function autoSwitch(){
         auto_div.style.fontWeight = "700";
 
     }
+}
+
+function colorSwitch(){
+
+    if (color < colors.length-1){
+
+        color++;
+
+    }else{
+
+        color = 0;
+    }
+
+    $(color_div).css("color", colors[color]);
+    // $("mark").css("background", colors[color]);
+    updatePointer();
+}
+
+function pointerSwitch(){
+
+    if (pointer==0){
+        pointer = 1;
+    }else{
+        pointer = 0;
+    }
+
+    updatePointer();
+
+
+}
+
+function updatePointer(){
+
+    switch (pointer){
+
+        case 0:
+            $("mark").css({ "background": colors[color], "border-width": "2px", "border-bottom": ("solid transparent") });
+            break;
+        case 1:
+            $("mark").css({ "background": "transparent", "border-width": "2px", "border-bottom": ("solid" + colors[color]) });
+            break;
+
+    }
+
 }
 
 // runFrame
@@ -140,8 +213,7 @@ function marker(){
 
     $("#reader").unmark();
     $("#reader").markRanges([{ start: cursor, length: length }]);
-    // interval += 100;    
-
+    updatePointer();
 
 }
 
@@ -169,7 +241,11 @@ function runFrame(){
     }
     //update interval in nice way
 
-    wpm_div.textContent = wpm;
+    if (wpm<100){
+        wpm_div.textContent = "0"+wpm;
+    } else if ((wpm < 1000)){
+        wpm_div.textContent = wpm;
+    }
 
 }
 
