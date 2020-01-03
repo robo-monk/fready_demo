@@ -28,7 +28,7 @@ var pointer = 0;
 //listeners and boring stuff
 
 // const newText = reader.textContent.split('\n').map((item, i) => {
-//     return `<div key=${i}>${item}</div>`;
+//     return `<div key=${i}>${item}\n</div>`;
 // });
 // reader.innerHTML = newText.join('');
 
@@ -54,6 +54,27 @@ function keyDown(e) {
     mouse_moved();
     pressedKeys[e.keyCode] = true;
 
+    if (e.keyCode == 190) {
+        length += 2;
+        marker();
+
+    }
+
+    if (e.keyCode == 188) {
+
+        if (length > 2) {
+            length -= 2;
+        }
+        marker();
+
+    } 
+
+
+    if (e.keyCode == 32 && e.target == document.body) {
+        e.preventDefault();
+        autoSwitch();
+    }
+
 }
 
 function keyUp(e) {
@@ -73,7 +94,7 @@ function keyUp(e) {
         pointerSwitch();
     }
 
-
+   
 
     pressedKeys[e.keyCode] = false;
 
@@ -265,9 +286,20 @@ function updateFrame() {
     //ugly ass code ahead
     marking = false;
     add = 1;
-    if (reader.textContent[cursor+1]==" "){
-        add = 2;
-    }
+
+    // if (reader.textContent[cursor+1]==" "){
+    //     add = 2;
+    // }
+
+
+    // if (reader.textContent[cursor] == "\n") {
+    //     length = 50;
+    // }
+    // if (reader.textContent[cursor + length + 0] == "\n") {
+    //     length-=add;
+    //     console.log('plilplop')
+    // }
+
     if (pressedKeys[39] || auto) {
         // console.log(auto)
         cursor+=add;
@@ -278,6 +310,8 @@ function updateFrame() {
         marking = true;
 
     }
+
+    
 
     
 
