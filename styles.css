@@ -103,6 +103,38 @@ hr{
 
 }
 
+#shortcuts{
+    
+    font-family: 'Roboto Mono', monospace;
+    padding: 20px;
+    width: 150px;
+    height: 412.5px;    
+    background-color: #efeeee;
+    border-radius: 15px;
+    box-shadow: 4px 4px 12px #d1cdc78f, -4px -4px 12px #ffffff;
+    border: 1px solid #ffffff80;
+    cursor: pointer;
+
+    line-height: 1.6;
+
+    position: fixed;
+    margin-left: 83%;
+    margin-top: 16%;   
+    text-align: center;
+    opacity: 0%;
+    transition: all .2s ease-in;
+
+    
+
+}
+
+#shortcuts:hover{
+    opacity: 100%;
+}
+
+
+
+
 mark {
     /* B80C09 */
     background: #19e0ae;
