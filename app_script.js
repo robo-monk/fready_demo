@@ -11,6 +11,7 @@ const color_div = document.querySelector('#color')
 
 //variables
 
+
 var last_mouse_x;
 var last_mouse_y;
 var cursor = 0;
@@ -287,6 +288,9 @@ function updateFrame() {
     marking = false;
     add = 1;
 
+
+
+
     // if (reader.textContent[cursor+1]==" "){
     //     add = 2;
     // }
@@ -299,6 +303,9 @@ function updateFrame() {
     //     length-=add;
     //     console.log('plilplop')
     // }
+
+
+
 
     if (pressedKeys[39] || auto) {
         // console.log(auto)

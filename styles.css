@@ -4,6 +4,13 @@ body{
     color: #111111f5;
 }
 
+footer{
+    
+    background-color: #efeeee;
+    font-family: 'Gelasio', serif;
+    color: #111111f5;
+}
+
 hr{
     border: 0.5px solid #ffffff80;
     border-radius: 5px;
