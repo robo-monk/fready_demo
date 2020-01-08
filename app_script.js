@@ -24,14 +24,34 @@ var auto = false;
 //constants
 
 var color = 0;
-const colors = ['#EEC643', '#ED254E', '#004BA8', '#0CCE6B', '#B8B8F3'];
 var pointer = 0;
-//listeners and boring stuff
+var cpl = 50;
+const colors = ['#EEC643', '#ED254E', '#004BA8', '#0CCE6B', '#B8B8F3'];
 
-// const newText = reader.textContent.split('\n').map((item, i) => {
-//     return `<div key=${i}>${item}\n</div>`;
-// });
-// reader.innerHTML = newText.join('');
+//listeners and boring stuff
+var newText = "<div key=0> "
+var newText = " "
+
+reader.textContent.split(' ').reduce((c, w, i) => {
+    c += w.length;
+
+    if (c<cpl){
+
+        newText+= w+' ';
+
+    }else{
+        //must generate new line 
+
+        // newText += `± </div> <div key=${i}>${w} `
+        newText += `\n ${w}`
+
+        c=0;
+    }
+    return c;
+    // return `<div key=${i}>${item}\n</div>`;
+});
+
+reader.innerHTML = newText;
 
 document.onmousemove = (function () {
     var onmousestop = function () {
@@ -296,13 +316,15 @@ function updateFrame() {
     // }
 
 
-    // if (reader.textContent[cursor] == "\n") {
-    //     length = 50;
-    // }
-    // if (reader.textContent[cursor + length + 0] == "\n") {
-    //     length-=add;
-    //     console.log('plilplop')
-    // }
+    if (reader.textContent[cursor] == "\n") {
+        length = 1;
+    }
+    if (reader.textContent[cursor + length + 0] == "\n") {
+        length-=add;
+        console.log('plilplop')
+    }else{
+        length += add;
+    }
 
 
 
@@ -327,3 +349,4 @@ function updateFrame() {
     // }
 
 }
+
