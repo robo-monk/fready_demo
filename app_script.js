@@ -1,3 +1,4 @@
+
 //document objects
 const body = document.querySelector('body');
 const menu_wrapper = document.querySelector('#menu_wrapper');
@@ -8,6 +9,7 @@ const auto_div = document.querySelector('#auto');
 const wpm_plus = document.querySelector('#wpm_plus')
 const wpm_minus = document.querySelector('#wpm_minus')
 const color_div = document.querySelector('#color')
+var line_div=null;
 
 //variables
 
@@ -15,6 +17,9 @@ const color_div = document.querySelector('#color')
 var last_mouse_x;
 var last_mouse_y;
 var cursor = 0;
+
+var line = 1;
+
 var length = 50;
 var pressedKeys = {};
 var marking = false;
@@ -29,29 +34,32 @@ var cpl = 50;
 const colors = ['#EEC643', '#ED254E', '#004BA8', '#0CCE6B', '#B8B8F3'];
 
 //listeners and boring stuff
-var newText = "<div key=0> "
+var newText = "<div id=0> "
 var newText = " "
 
-reader.textContent.split(' ').reduce((c, w, i) => {
+var rawtxt = reader.innerHTML.replace(/\r?\n|\r/g, "");
+console.log(rawtxt)
+
+rawtxt.split(' ').reduce((c, w, i) => {
     c += w.length;
-
     if (c<cpl){
-
         newText+= w+' ';
-
     }else{
         //must generate new line 
-
         // newText += `± </div> <div key=${i}>${w} `
-        newText += `\n ${w}`
-
-        c=0;
+        newText += `\n${w} `
+        c=w.length;
     }
     return c;
     // return `<div key=${i}>${item}\n</div>`;
 });
 
 reader.innerHTML = newText;
+
+const newText2 = reader.textContent.split('\n').map((item, i) => {
+    return `<div id=line${i}>${item} \n</div>`;
+});
+reader.innerHTML = newText2.join('');
 
 document.onmousemove = (function () {
     var onmousestop = function () {
@@ -66,9 +74,23 @@ document.onmousemove = (function () {
 
 })();
 
+
+
+
 window.addEventListener('keydown', keyDown);
 window.addEventListener('keyup', keyUp);
 window.addEventListener('click', clcikkk)
+
+
+line_div = reader.querySelector(`#line${line}`);
+newLine()
+
+function newLine(){
+
+    $(`#reader > #line${line}`).unmark();
+    line+=1;
+    line_div = reader.querySelector(`#line${line}`);
+}
 
 function keyDown(e) {
 
@@ -155,6 +177,7 @@ function colorSwitch(){
     $(color_div).css("color", colors[color]);
     // $("mark").css("background", colors[color]);
     updatePointer();
+
 }
 
 function pointerSwitch(){
@@ -237,7 +260,6 @@ function mouse_moved(){
     toolbar.style.cursor = 'pointer';
     reader.style.cursor = 'text';
 
-
 }
 
 function mouse_stopped(){
@@ -253,8 +275,8 @@ function mouse_stopped(){
 
 function marker(){
 
-    $("#reader").unmark();
-    $("#reader").markRanges([{ start: cursor, length: length }]);
+    $(`#reader > #line${line}`).unmark();
+    $(`#reader > #line${line}`).markRanges([{ start: cursor, length: length }]);
     updatePointer();
 
 }
@@ -265,13 +287,9 @@ function runFrame(){
     if (pressedKeys[189]) {
         // mouse_moved();
         if (wpm>10){
-
             wpm_minus.style.fontWeight = "700";
             wpm -= 10;
             setTimeout(function () { wpm_minus.style.fontWeight = "300"; }, 50);
-
-            
-
         }
         
     }
@@ -308,23 +326,21 @@ function updateFrame() {
     marking = false;
     add = 1;
 
-
-
-
     // if (reader.textContent[cursor+1]==" "){
     //     add = 2;
     // }
 
+    if (line_div.textContent[cursor] == "\n") {
+        // length = add;
+        cursor = 1;
+        newLine();
+    }
 
-    if (reader.textContent[cursor] == "\n") {
-        length = 1;
-    }
-    if (reader.textContent[cursor + length + 0] == "\n") {
-        length-=add;
-        console.log('plilplop')
-    }else{
-        length += add;
-    }
+    // if (reader.textContent[cursor + length + 0] == "\n") {
+    //     length-=add;
+    // }else{
+    //     length += add;
+    // }
 
 
 
@@ -337,7 +353,6 @@ function updateFrame() {
     if (pressedKeys[37]) {
         cursor-= add;
         marking = true;
-
     }
 
     
