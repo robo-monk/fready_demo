@@ -9,18 +9,22 @@ const auto_div = document.querySelector('#auto');
 const wpm_plus = document.querySelector('#wpm_plus')
 const wpm_minus = document.querySelector('#wpm_minus')
 const color_div = document.querySelector('#color')
-var line_div=null;
+var line_div = null;
 
 //variables
-
 
 var last_mouse_x;
 var last_mouse_y;
 var cursor = 0;
+var line = -1;
+var line_words = [];
+var current_word = -1;
+var cursor_word = 0;
+var start = 0;
 
-var line = 1;
 
-var length = 50;
+var length = 10;
+var words_len = 4;
 var pressedKeys = {};
 var marking = false;
 var wpm = 250;
@@ -34,25 +38,23 @@ var cpl = 50;
 const colors = ['#EEC643', '#ED254E', '#004BA8', '#0CCE6B', '#B8B8F3'];
 
 //listeners and boring stuff
-var newText = "<div id=0> "
 var newText = " "
 
 var rawtxt = reader.innerHTML.replace(/\r?\n|\r/g, "");
-console.log(rawtxt)
 
 rawtxt.split(' ').reduce((c, w, i) => {
     c += w.length;
-    if (c<cpl){
-        newText+= w+' ';
-    }else{
+    if (c < cpl) {
+        newText += w + ' ';
+    } else {
         //must generate new line 
         // newText += `± </div> <div key=${i}>${w} `
         newText += `\n${w} `
-        c=w.length;
+        c = w.length;
     }
     return c;
     // return `<div key=${i}>${item}\n</div>`;
-});
+}, 0);
 
 reader.innerHTML = newText;
 
@@ -82,14 +84,17 @@ window.addEventListener('keyup', keyUp);
 window.addEventListener('click', clcikkk)
 
 
-line_div = reader.querySelector(`#line${line}`);
+
 newLine()
 
-function newLine(){
+function newLine() {
 
     $(`#reader > #line${line}`).unmark();
-    line+=1;
+    line += 1;
     line_div = reader.querySelector(`#line${line}`);
+    line_words = line_div.textContent.trim();
+    line_div.textContent = line_words + '\n'
+
 }
 
 function keyDown(e) {
@@ -98,19 +103,19 @@ function keyDown(e) {
     pressedKeys[e.keyCode] = true;
 
     if (e.keyCode == 190) {
-        length += 2;
+        length += 1;
         marker();
 
     }
 
     if (e.keyCode == 188) {
 
-        if (length > 2) {
-            length -= 2;
+        if (length > 1) {
+            length -= 1;
         }
         marker();
 
-    } 
+    }
 
 
     if (e.keyCode == 32 && e.target == document.body) {
@@ -121,11 +126,11 @@ function keyDown(e) {
 }
 
 function keyUp(e) {
-    
+
     setTimeout(function () { mouse_stopped(); }, 1000);
 
 
-    if (e.keyCode == 65){
+    if (e.keyCode == 65) {
         autoSwitch();
     }
 
@@ -137,18 +142,20 @@ function keyUp(e) {
         pointerSwitch();
     }
 
-   
+
 
     pressedKeys[e.keyCode] = false;
+    marker(true)
 
 }
 
-function clcikkk(){
+function clcikkk() {
+
     mouse_moved();
     setTimeout(function () { mouse_stopped(); }, 1000);
 }
 
-function autoSwitch(){
+function autoSwitch() {
 
     if (auto) {
         auto = false;
@@ -163,13 +170,13 @@ function autoSwitch(){
     }
 }
 
-function colorSwitch(){
+function colorSwitch() {
 
-    if (color < colors.length-1){
+    if (color < colors.length - 1) {
 
         color++;
 
-    }else{
+    } else {
 
         color = 0;
     }
@@ -180,11 +187,11 @@ function colorSwitch(){
 
 }
 
-function pointerSwitch(){
+function pointerSwitch() {
 
-    if (pointer==0){
+    if (pointer == 0) {
         pointer = 1;
-    }else{
+    } else {
         pointer = 0;
     }
 
@@ -193,9 +200,9 @@ function pointerSwitch(){
 
 }
 
-function updatePointer(){
+function updatePointer() {
 
-    switch (pointer){
+    switch (pointer) {
 
         case 0:
             $("mark").css({ "background": colors[color], "border-width": "2px", "border-bottom": ("solid transparent") });
@@ -223,7 +230,7 @@ function tiktok() {
 }
 
 //for the mark
-var speed = (60/(wpm * 6))*100; // ms TO-DO do math for the wpm shit (6 is the avg charachter in word)
+var speed = (60 / (wpm * 6)) * 100; // ms TO-DO do math for the wpm shit (6 is the avg charachter in word)
 var expected2 = Date.now() + speed;
 setTimeout(mvc, speed);
 
@@ -231,7 +238,7 @@ function mvc() {
 
     updateFrame();
     speed = (60 / (wpm * 6)) * 1000;
-    
+
     var dt = Date.now() - expected2; // the drift (positive for overshooting)
     if (dt > speed) {
         // possibly special handling to avoid futile "catch up" run
@@ -253,7 +260,7 @@ function mvc() {
 
 // reader.innerHTML.replace(chr(10), "\n");
 
-function mouse_moved(){
+function mouse_moved() {
 
     menu_wrapper.style.opacity = 100;
     body.style.cursor = 'inherit';
@@ -262,7 +269,7 @@ function mouse_moved(){
 
 }
 
-function mouse_stopped(){
+function mouse_stopped() {
 
     menu_wrapper.style.opacity = 0;
     body.style.cursor = 'none';
@@ -273,25 +280,36 @@ function mouse_stopped(){
 
 
 
-function marker(){
+function marker(clip = false) {
 
     $(`#reader > #line${line}`).unmark();
-    $(`#reader > #line${line}`).markRanges([{ start: cursor, length: length }]);
+
+    // $(`#reader > #line${line}`).markRanges([{ start: cursor, length: 1 }]);
+    if (clip) {
+        // dt = clipToWords();
+        // console.table({ "start": cursor - dt[0] + 2, "len": dt[0] + dt[1] + 2, "cur":cursor})
+        // $(`#reader > #line${line}`).markRanges([{ start: cursor - dt[0] + 2, length: dt[0] + dt[1]+2 }]);
+        clipToWords();
+
+    } else {
+        $(`#reader > #line${line}`).markRanges([{ start: cursor, length: length }]);
+    }
+
     updatePointer();
 
 }
 
 
-function runFrame(){
+function runFrame() {
 
     if (pressedKeys[189]) {
         // mouse_moved();
-        if (wpm>10){
+        if (wpm > 10) {
             wpm_minus.style.fontWeight = "700";
             wpm -= 10;
             setTimeout(function () { wpm_minus.style.fontWeight = "300"; }, 50);
         }
-        
+
     }
     if (pressedKeys[187]) {
         wpm_plus.style.fontWeight = "700";
@@ -301,15 +319,15 @@ function runFrame(){
     }
     //update interval in nice way
 
-    if (wpm<100){
-        wpm_div.textContent = "0"+wpm;
-    } else if ((wpm < 1000)){
+    if (wpm < 100) {
+        wpm_div.textContent = "0" + wpm;
+    } else if ((wpm < 1000)) {
         wpm_div.textContent = wpm;
     }
 
 }
 
-function wpmPlusPlus(){
+function wpmPlusPlus() {
 
     wpm += 10;
 
@@ -326,14 +344,15 @@ function updateFrame() {
     marking = false;
     add = 1;
 
-    // if (reader.textContent[cursor+1]==" "){
-    //     add = 2;
-    // }
-
     if (line_div.textContent[cursor] == "\n") {
         // length = add;
-        cursor = 1;
+        cursor = 0;
         newLine();
+    }
+
+    if (line_div.textContent[cursor] == " ") {
+        // length = add;
+        add = 2;
     }
 
     // if (reader.textContent[cursor + length + 0] == "\n") {
@@ -347,21 +366,96 @@ function updateFrame() {
 
     if (pressedKeys[39] || auto) {
         // console.log(auto)
-        cursor+=add;
+        cursor += add;
         marking = true;
+
     }
+
     if (pressedKeys[37]) {
-        cursor-= add;
+        cursor -= add;
         marking = true;
     }
+}
 
-    
 
-    
+// console.log(current_word)
 
-    // if (auto){
-    //     cursor++;
-    // }
+// if (auto){
+//     cursor++;
+// }
+
+
+function clipToWords() {
+
+    if (line_words[cursor] == " ") { cursor++ }
+
+    txt = line_words;
+
+    s = 0
+    s_search = true;
+    e = 0
+    e_search = 0;
+    breakit1 = false;
+    breakit2 = false;
+
+    c = ""
+    //todo make it world count
+    for (i = 0; i < txt.length; i++) {
+
+        if (breakit1 && breakit2) {break; }
+        if (s_search) {
+            if (line_words[cursor + s] != " ") {
+                s = -i;
+            } else {
+                s_search = false
+            }
+
+        } else {
+            breakit1 = true;
+        }
+
+        if (e_search < words_len) {
+
+            if (line_words[cursor + e] != " ") {
+
+                e = i;
+
+            } else {
+                e++;
+                e_search += 1;
+            }
+
+        } else {
+            breakit2 = true;
+            e--;
+        }
+
+
+
+        $(`#reader > #line${line}`).unmark();
+
+        $(`#reader > #line${line}`).markRanges([{ start: cursor + s + 1, length: e - s - 1 }]);
+
+        updatePointer();
+
+
+
+
+    }
+
+
+
+
+    return [s, e]
+
+    // $(`#reader > #line${line}`).markRanges([{ start: cursor - s + 2, length: e }]);
+
+}
+
+
+function clipIt() {
+
+
 
 }
 
