@@ -50,6 +50,31 @@ hr{
 
     opacity: 100%;
 }
+
+input{
+    
+    font-family: 'Roboto Mono', monospace;
+    padding: 10px;
+    margin: 10px;
+    /* width: 50px;
+    height: 412.5px;     */
+    background-color: #efeeee;
+    border-radius: 15px;
+    box-shadow: 4px 4px 12px #d1cdc78f, -4px -4px 12px #ffffff;
+    border: 1px solid #ffffff80;
+    cursor: pointer;
+    line-height: 5.0;
+    transition: all .2s ease-in;
+
+
+}
+
+input:hover{
+    
+    box-shadow: 4px 4px 12px #d1cdc780 inset, -4px -4px 12px #ffffffa1 inset;
+
+}
+
 #toolbar{
     
     font-family: 'Roboto Mono', monospace;
@@ -67,6 +92,7 @@ hr{
     
 
 }
+
 
 #wpm_sector {
     
