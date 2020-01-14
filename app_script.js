@@ -15,7 +15,7 @@ const color_div = document.querySelector('#color')
 var last_mouse_x;
 var last_mouse_y;
 var cursor = 0;
-var length = 50;
+var length = 20;
 var pressedKeys = {};
 var marking = false;
 var wpm = 250;

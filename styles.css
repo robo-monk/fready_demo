@@ -23,12 +23,12 @@ hr{
     cursor: text;
 
     font-size: 22;
-    line-height: 1.6;
+    line-height: 36px;
 
     margin-left: auto;
     margin-right: auto;
     padding: 70px;
-    width: 790px;
+    width: 600px;
 
     background-color: #efeeee;
     border-radius: 6px;
