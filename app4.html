@@ -1,0 +1,122 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Freaddy App</title>
+
+    <link rel="stylesheet" type="text/css" href="styles.css" media="screen" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Gelasio&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:300,700&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.es6.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.js"></script>
+
+
+</head>
+<body>
+
+    
+    <div id="menu_wrapper" class="noselect">
+        <!-- but im not a wrapper -->
+
+    <div id='icon'>
+        <img src="assets/rick.jpg" id="avatar" onclick="location.href='app_home.html'">
+    </div>
+    <div id='toolbar'> 
+        
+            <div id='wpm_sector'> <span id="wpm_plus" onclick="wpmPlusPlus()">+</span> <span id='wpm'></span> <span id="wpm_minus"onclick="wpmMinusMinus()">-</span></div>
+            <div id='auto' onclick="autoSwitch()">A</div>
+            <hr>
+            <div id='highlight'>H</div>
+            <hr>
+            <div id='color' onclick="colorSwitch()">C</div>
+        
+    </div>
+
+   
+    
+
+    </div>
+
+    <div id='shortcuts'>
+        <p>
+        A/Space : autopilot
+        <hr>
+
+        >/&lt; : pointer width controls
+        <hr>
+
+        P : pointer style control
+                    <hr>
+
+        +/- : wpm controls
+                    <hr>
+
+        C : color control
+
+        </p>
+    </div>
+
+    <div id='reader'>
+I guess I'll turn in. Cool. Dad? I feel like I've spent my life pretending you're a great guy and trying to be like you.
+ And the ugly truth has always been -- That I'm not that great a guy and you're exactly like me.
+ Am I evil? Worse.
+ You're smart.
+ When you know nothing matters, the universe is yours.
+ And I've never met a universe that was into it.
+ The universe is basically an animal.
+ It grazes on the ordinary.
+ It creates infinite idiots just to eat them, not unlike your friend Timmy.
+ Tommy.
+ Yeah, it hardly matters now, sweetie.
+ You know, smart people get a chance to climb on top, take reality for a ride, but it'll never stop trying to throw you.
+ And, eventually, it will.
+ There's no other way off.
+ Dad, I'm out of excuses to not be who I am.
+ So who am I? What do I do? My advice -- Take off.
+ Put a saddle on your universe.
+ Let it kick itself out.
+ I can't do that.
+ The kids, Jerry, my job, and, as much as I hate to admit it, ABC's "The Bachelor.
+ " I can make a clone of you, a perfect instance of you, with all your memories.
+ An exact copy in every way.
+ It'll love and provide for the kids, do your job, and consume broadcast-network reality TV on the same allegedly ironic
+ level as you.
+ You could be gone a day, a week, or the rest of your life with zero consequences.
+ The moment you decide to come back, I flip a switch, and the clone's job is done.
+ It feels no pain, it regrets nothing, and has zero chance of going "Blade Runner.
+ " If nothing matters, why would you do that for me? I don't know, maybe you matter so little that I like you.
+ Or maybe it makes you matter.
+ Maybe I love you.
+ Maybe something about your mother.
+ Don't jump a gift shark in the mouth.
+ I don't know if I can do it.
+ Then stay, and luxuriate in a life you can finally know you've chosen.
+ My secret bonus is that no matter what you choose, you're finally gonna chill the fuck
+ out.
+ Okay.
+ I know what I want to do.
+  
+     </div>
+
+    <script src="app_script.js"></script>
+</body>
+
+<footer>
+    <hr>
+    <script type="text/javascript">
+
+    var date = new Date(),
+        year = date.getFullYear(),
+        text = "Copyright &copy; " + year + " Freaddy. All rights reserved.",
+        html = '<p style="text-align: center;">' + text + '</p>';
+
+    document.write(html);
+    </script>
+</footer>
+
+</html>
