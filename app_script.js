@@ -1,5 +1,6 @@
 
 //document objects
+
 const body = document.querySelector('body');
 const menu_wrapper = document.querySelector('#menu_wrapper');
 const toolbar = document.querySelector('#toolbar');
@@ -9,7 +10,6 @@ const auto_div = document.querySelector('#auto');
 const wpm_plus = document.querySelector('#wpm_plus')
 const wpm_minus = document.querySelector('#wpm_minus')
 const color_div = document.querySelector('#color')
-var line_div = null;
 
 //variables
 
@@ -21,25 +21,31 @@ var line_words = [];
 var current_word = -1;
 var cursor_word = 0;
 var start = 0;
-
+var curr_line_max = 50;
 
 var length = 10;
 var words_len = 4;
 var pressedKeys = {};
 var marking = false;
 var wpm = 250;
+var word_count = 0;
 var auto = false;
 
-//constants
+var line_div = null;
+
+
+//constants(ish)
 
 var color = 0;
 var pointer = 0;
 var cpl = 50;
 const colors = ['#EEC643', '#ED254E', '#004BA8', '#0CCE6B', '#B8B8F3'];
 
-//listeners and boring stuff
-var newText = " "
+//listeners and initialising stuff
 
+
+//build new lines and format view accordingly
+var newText = ""
 var rawtxt = reader.innerHTML.replace(/\r?\n|\r/g, "");
 
 rawtxt.split(' ').reduce((c, w, i) => {
@@ -48,64 +54,62 @@ rawtxt.split(' ').reduce((c, w, i) => {
         newText += w + ' ';
     } else {
         //must generate new line 
-        // newText += `± </div> <div key=${i}>${w} `
         newText += `\n${w} `
         c = w.length;
     }
     return c;
-    // return `<div key=${i}>${item}\n</div>`;
+
 }, 0);
 
-reader.innerHTML = newText;
 
-const newText2 = reader.textContent.split('\n').map((item, i) => {
-    return `<div id=line${i}>${item} \n</div>`;
-});
-reader.innerHTML = newText2.join('');
+reader.innerHTML = newText.split('\n').map((line, i) => {
+    line_chs = 0;
+
+    return `<div class=l id=line${i}>${line.split(' ').map((word, i) => {
+        word_count++;
+        line_chs++;
+        return `<span class=w id=word${word_count}>${word.split('').map((c, i) => {
+            line_chs++;
+            return `<span class=c id=c${line_chs}>${c}</span>`;
+        }).join('')}<span class=c id = c${ line_chs+1 }> </span></span>`;}).join('')}\n</div>`;
+}).join('');
 
 document.onmousemove = (function () {
     var onmousestop = function () {
         mouse_stopped();
     }, thread;
-
     return function () {
-        mouse_moved()
+        mouse_moved();
         clearTimeout(thread);
         thread = setTimeout(onmousestop, 2000);
     };
-
 })();
-
-
-
 
 window.addEventListener('keydown', keyDown);
 window.addEventListener('keyup', keyUp);
 window.addEventListener('click', clcikkk)
 
+line=0;
 
+readLine(line)
+function readLine(l) {
+    // console.log('swithhhhhhhh')
+    // line_div = reader.querySelector(`#line${l}`);
+    curr_line_max =  $(`#line${line} .c`).length;
+    // window.scrollBy(0, 35.2) fontsize*lineheight
 
-newLine()
-
-function newLine() {
-
-    $(`#reader > #line${line}`).unmark();
-    line += 1;
-    line_div = reader.querySelector(`#line${line}`);
-    line_words = line_div.textContent.trim();
-    line_div.textContent = line_words + '\n'
-
+    // line_words = line_div.querySelectorAll('word')
+    // $(`#reader > #line${l}`).unmark();
+    // $(`#reader > #line${l}`).unmark();
 }
 
 function keyDown(e) {
-
     mouse_moved();
     pressedKeys[e.keyCode] = true;
 
     if (e.keyCode == 190) {
         length += 1;
         marker();
-
     }
 
     if (e.keyCode == 188) {
@@ -141,8 +145,6 @@ function keyUp(e) {
     if (e.keyCode == 80) {
         pointerSwitch();
     }
-
-
 
     pressedKeys[e.keyCode] = false;
     marker(true)
@@ -219,8 +221,7 @@ function updatePointer() {
 var interval = 100; // ms TO-DO do math for the wpm shit
 var expected = Date.now() + interval;
 setTimeout(tiktok, interval);
-function tiktok() {
-    runFrame();
+function tiktok() { runFrame();
     var dt = Date.now() - expected; // the drift (positive for overshooting)
     if (dt > interval) {
         // possibly special handling to avoid futile "catch up" run
@@ -234,11 +235,9 @@ var speed = (60 / (wpm * 6)) * 100; // ms TO-DO do math for the wpm shit (6 is t
 var expected2 = Date.now() + speed;
 setTimeout(mvc, speed);
 
-function mvc() {
+function mvc() { updateFrame();
 
-    updateFrame();
     speed = (60 / (wpm * 6)) * 1000;
-
     var dt = Date.now() - expected2; // the drift (positive for overshooting)
     if (dt > speed) {
         // possibly special handling to avoid futile "catch up" run
@@ -246,15 +245,10 @@ function mvc() {
         expected2 = Date.now() + speed;
         dt = Date.now() - expected2;
     }
-    if (marking) {
-        marker();
-    }
-
     expected2 += speed;
     setTimeout(mvc, Math.max(0, speed - dt)); // take into account drift
+
 }
-
-
 
 //actual code
 
@@ -266,7 +260,7 @@ function mouse_moved() {
     body.style.cursor = 'inherit';
     toolbar.style.cursor = 'pointer';
     reader.style.cursor = 'text';
-
+    
 }
 
 function mouse_stopped() {
@@ -280,24 +274,75 @@ function mouse_stopped() {
 
 
 
-function marker(clip = false) {
+function marker(s, l, clip = false) {
 
-    $(`#reader > #line${line}`).unmark();
+    // $(`#reader > #line${line}`).unmark();
+    // $(`#reader > #line${line}`).markRanges([{ start: cursor, length: length }]);
+    // updatePointer();
+    // console.log(reader.querySelector(`#word${cursor}`));
+    // reader.querySelector(`#word${cursor}`).style.background = 'red';
 
-    // $(`#reader > #line${line}`).markRanges([{ start: cursor, length: 1 }]);
-    if (clip) {
-        // dt = clipToWords();
-        // console.table({ "start": cursor - dt[0] + 2, "len": dt[0] + dt[1] + 2, "cur":cursor})
-        // $(`#reader > #line${line}`).markRanges([{ start: cursor - dt[0] + 2, length: dt[0] + dt[1]+2 }]);
-        clipToWords();
 
-    } else {
-        $(`#reader > #line${line}`).markRanges([{ start: cursor, length: length }]);
+    // console.log(line_div.querySelectorAll('.w')[2])
+
+    // console.log(line_div.querySelectorAll('.c')[cursor].parentNode)
+    
+    // $(this).closest('div')
+    // console.log(line_div)
+    $(`#line${line}`).children().css("background-color", "transparent")
+    $(`#line${line - 1}`).children().css("background-color", "transparent")
+    $(`#line${line - 1}`).children().children().css("background-color", "transparent")
+    $(`#line${line}`).children().children().css("background-color", "transparent")
+
+    //HIGHLIGHTWORD
+
+    // $(`#line${line-1}`).children().css("background-color", "transparent")
+
+    
+
+    //HIGHLIGHT CHAR
+
+
+    // $(`#line${line}`).find(`#c${cursor - length}`).css("background-color", "transparent")
+    // $(`#line${line}`).find(`#c${cursor}`).css("background-color", colors[color])
+    
+    for (i=0; i<length; i++){
+        $(`#line${line}`).find(`#c${cursor-i}`).css("background-color", colors[color])
     }
 
-    updatePointer();
+    // for (i = 0; i < length*7; i++) {
+
+    //     // $(`#line${line}`).find(`#c${cursor - 10}`).parent().css("background-color", "transparent")
+    //     $(`#line${line}`).find(`#c${cursor+i}`).parent().css("background-color", colors[color])
+    
+    // }
+
+
+    
+
+    console.log(`#line${line} > #c${cursor}`)
+
+
+
+    //HIGHLIGHTLINE
+    
+    // $(`#line${line}`).children().css("background-color", "red")
 
 }
+
+function clipToWords() {
+
+    // $(`#line${line - 1}`).children().children().css("background-color", "transparent")
+    // $(`#line${line}`).children().children().css("background-color", "transparent")
+
+    
+    for (i = 0; i < length; i++) {
+        $(`#line${line}`).find(`#c${cursor - i}`).parent().css("background-color", colors[color])
+    }
+
+
+}
+
 
 
 function runFrame() {
@@ -325,6 +370,8 @@ function runFrame() {
         wpm_div.textContent = wpm;
     }
 
+    
+    
 }
 
 function wpmPlusPlus() {
@@ -339,21 +386,28 @@ function wpmMinusMinus() {
 }
 
 function updateFrame() {
+    
+    
 
     //ugly ass code ahead
     marking = false;
     add = 1;
+    temp_text = $(`#line${line}`).text();
 
-    if (line_div.textContent[cursor] == "\n") {
+    // $(`#line${line}`).children()
+
+    if (cursor > curr_line_max + length/2) {
         // length = add;
         cursor = 0;
-        newLine();
+        readLine(line);
+        line++;
+
     }
 
-    if (line_div.textContent[cursor] == " ") {
-        // length = add;
-        add = 2;
-    }
+    // if (line_div.textContent[cursor] == " ") {
+    //     // length = add;
+    //     add = 2;
+    // }
 
     // if (reader.textContent[cursor + length + 0] == "\n") {
     //     length-=add;
@@ -372,8 +426,21 @@ function updateFrame() {
     }
 
     if (pressedKeys[37]) {
-        cursor -= add;
+
+        if (cursor>0){
+            cursor -= add;
+        }else{
+            line--;
+            readLine(line)
+        }
         marking = true;
+    }
+
+    if (marking) {
+        marker();
+        // clipToWords();
+    }else{
+        clipToWords();
     }
 }
 
@@ -385,77 +452,4 @@ function updateFrame() {
 // }
 
 
-function clipToWords() {
-
-    if (line_words[cursor] == " ") { cursor++ }
-
-    txt = line_words;
-
-    s = 0
-    s_search = true;
-    e = 0
-    e_search = 0;
-    breakit1 = false;
-    breakit2 = false;
-
-    c = ""
-    //todo make it world count
-    for (i = 0; i < txt.length; i++) {
-
-        if (breakit1 && breakit2) {break; }
-        if (s_search) {
-            if (line_words[cursor + s] != " ") {
-                s = -i;
-            } else {
-                s_search = false
-            }
-
-        } else {
-            breakit1 = true;
-        }
-
-        if (e_search < words_len) {
-
-            if (line_words[cursor + e] != " ") {
-
-                e = i;
-
-            } else {
-                e++;
-                e_search += 1;
-            }
-
-        } else {
-            breakit2 = true;
-            e--;
-        }
-
-
-
-        $(`#reader > #line${line}`).unmark();
-
-        $(`#reader > #line${line}`).markRanges([{ start: cursor + s + 1, length: e - s - 1 }]);
-
-        updatePointer();
-
-
-
-
-    }
-
-
-
-
-    return [s, e]
-
-    // $(`#reader > #line${line}`).markRanges([{ start: cursor - s + 2, length: e }]);
-
-}
-
-
-function clipIt() {
-
-
-
-}
 

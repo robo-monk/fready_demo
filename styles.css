@@ -145,7 +145,7 @@ hr{
 mark {
     /* B80C09 */
     background: #19e0ae;
-    border-radius: 3px;
+    /* border-radius: 3px; */
     /* outline: red;
     outline-width: px;
     outline-style: dashed; */
@@ -163,3 +163,22 @@ mark {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Opera and Firefox */
 }
+
+#reader .word:hover{
+    /* background-color: orange; */
+    outline-radius: 3px;
+    outline: solid red;
+    /* border-width: 2px; */
+}
+
+span:active{
+    /* background-color: orange; */
+    border-radius: 3px;
+    
+}
+
+
+span{
+    transition: all .3s ease-in;
+}
+
