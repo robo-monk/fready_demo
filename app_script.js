@@ -33,6 +33,15 @@ var pointer = 0;
 // });
 // reader.innerHTML = newText.join('');
 
+// var pasteText = document.querySelector("reader");
+// pasteText.focus();
+// document.execCommand("paste");
+// console.log(pasteText.textContent);
+// alert('pasted');
+
+navigator.clipboard.readText().then(clipText =>
+    document.getElementById("reader").innerText = clipText);
+
 document.onmousemove = (function () {
     var onmousestop = function () {
         mouse_stopped();
