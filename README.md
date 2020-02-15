@@ -1,2 +1,2 @@
 # fready
-The official fready repo
+Fready on GitHub!
