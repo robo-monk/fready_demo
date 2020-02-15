@@ -1,2 +1,2 @@
-# freaddy
-The official freaddy repo
+# fready
+The official fready repo
